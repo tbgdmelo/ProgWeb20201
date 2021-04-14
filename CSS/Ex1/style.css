@@ -1,0 +1,11 @@
+div{
+    background-color: lightgray;
+    border: 10px solid black;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 50px;
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 15px;
+}
+p{
+    margin: 5px 30px 5px 30px 
+}
