@@ -5,7 +5,8 @@ div{
     box-shadow: 2px 2px 2px 0px inset, 2px 2px 2px 0px;
     width: 25%;
     height: 25%;
-    margin: 100px 0px 0px 100px;
+    padding: 10px 10px 10px 10px;
+    margin: 100px;
     
 }
 body{
