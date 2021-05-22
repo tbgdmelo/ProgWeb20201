@@ -2,36 +2,109 @@
 
     const TAM = 40;
     const FPS = 5;
+
+    //objetos do jogo e utilitários
+    let VEL = 500;
+    let frames=0;
     let board;
     let snake;
     let placar;
     let alimento;
+    
+    //controladores das funções do jogo
     let pausar=false;
     let perdeu=false;
     let comecou=false; //pra não executar duas vezes a inicializacao
+
+    //controladores das funções
+    let gameover;
+    let comendo;
+    let andando;
+    let velocidade;
     
     function init() {
         placar = new Placar();
         board = new Board();
         snake = new Snake();
         alimento = new Alimento();
-        
     }
 
+    //Chama as funções novamente colocando com a nova velocidade
+    function changeSpeed(){
+        gameover = window.setInterval(gameOver, 100/FPS);
+        andando = window.setInterval(run, VEL/FPS);
+        comendo = window.setInterval(verificaAlimento, VEL/FPS);
+        velocidade = window.setInterval(verificaVel, VEL/FPS);
+    }
+
+    //Reinicia o intervalo das funções executadas
+    function finaliza(){
+        clearInterval(gameover);
+        clearInterval(andando);
+        clearInterval(comendo);
+        clearInterval(velocidade);
+    }
+
+    //Verifica o fim de jogo
+    //Teste se a cabeça bateu fora do campo ou no próprio corpo
+    function gameOver(){
+        //verificar se a cabeça bateu em uma parte do corpo ou fora da tabela
+        let cabeca = snake.corpo[snake.corpo.length-1];
+
+        if(cabeca[0] >=41 || cabeca[1] >=41 || cabeca[0] <0 || cabeca[1]<0){
+            perdeu=true;
+            console.log('perdeu saindo do campo');
+            document.getElementById("GameStatus").innerHTML = ('Fim de Jogo! Você saiu do campo.');
+            finaliza();
+            return;
+        }
+
+        for (let j = 0; j < snake.corpo.length-1; j++) {
+            if(cabeca[0] === snake.corpo[j][0] && cabeca[1] === snake.corpo[j][1] ){
+                finaliza();
+                console.log('perdeu batendo no corpo');
+                document.getElementById("GameStatus").innerHTML = ('Fim de Jogo! Você bateu no corpo.');   
+                perdeu=true;
+            }
+        }        
+    }
+
+    //Inicia o jogo
     function comeca(){
-        if(!comecou){
+        if(!perdeu){
             comecou=true;
-            window.setInterval(run, 300/FPS);
-            window.setInterval(verificaAlimento, 300/FPS);
+            gameover = window.setInterval(gameOver, 100/FPS);
+            andando = window.setInterval(run, VEL/FPS);
+            comendo = window.setInterval(verificaAlimento, VEL/FPS);
+            velocidade = window.setInterval(verificaVel, VEL/FPS);
         }
     }
 
+    //Muda a velocidade do jogo
+    function verificaVel(){
+        if(frames%60==0){
+            VEL=VEL-2;
+            finaliza();
+            changeSpeed();
+            console.log('nova vel '+ VEL)
+        }
+    }
+
+    //Verifica se apertou a tecla S para começar ou reiniciar o jogo
+    //Atualizo o html quaso seja necessário reinicia
     window.addEventListener("keydown", function(e){
-        if(e.key==='s'){
-            comeca();
+        if(e.key==='s' || e.key==='S'){
+            if(!perdeu && !comecou){
+                comeca();
+            }
+            else if(perdeu && comecou){
+                window.location.reload();
+            }
         }
     });
 
+
+    //Realiza a movimentação da snake impedindo movimentos de 180°
     window.addEventListener("keydown", function(e) {
         switch(e.key) {            
             case "ArrowUp":
@@ -57,6 +130,7 @@
         }
     });
 
+    //Pausa o game
     function pause(){
         console.log('hora de parar')
         if(!pausar){
@@ -67,12 +141,14 @@
         }
     }
 
+    //Verifica se a tecla P foi pressionada para pausar o jogo
     window.addEventListener('keydown', function(e){
-        if(e.key==='p'){
+        if(e.key==='p' || e.key==='P'){
             pause();
         }
     });
 
+    //Alimentos da snake
     class Alimento{
         constructor(){
             //Preciso de uma posição diferente das que são ocupadas pela snake
@@ -82,7 +158,9 @@
             this.local.forEach(campo => document.querySelector(`#board tr:nth-child(${campo[0]}) td:nth-child(${campo[1]})`).style.backgroundColor = this.cor);            
         }
 
+        //Escolhe aleatóriamente a cor da snake
         sorteiaCor(){
+            //preto tendo o dobro de posições do verm. ele tem 2x mais chances de ser escolhido
             let coresAlimento=["#111111","#111111","#ff0000"];
             const random = (min, max) =>Math.floor(Math.random() * (max-min) +min);
             return coresAlimento[random(0,3)];
@@ -112,6 +190,7 @@
 
     }
 
+    //Cria a pontuação do jogo e a mensagem de game over
     class Placar{
         constructor(){
             this.pontos=0;
@@ -130,9 +209,18 @@
 
             // Agora sim, inserir (anexar) o elemento filho (placarPontos) ao elemento pai (body)
             elemento_pai.appendChild(placarPontos);
+
+            
+            var elemento_pai = document.body;
+            var gameStatus = document.createElement('h2');
+            gameStatus.setAttribute('id','GameStatus');
+            var texto = document.createTextNode('');
+            gameStatus.appendChild(texto);
+            elemento_pai.appendChild(gameStatus);
         }
     }
 
+    //Tabela para a snake caminhar
     class Board {
         constructor() {
             this.element = document.createElement("table");
@@ -159,6 +247,7 @@
         }
 
         andar() {
+            frames=frames+5;
             let head = this.corpo[this.corpo.length-1];
             let add;
             switch(this.direcao) {
@@ -209,6 +298,7 @@
         }
     }
 
+    //Faz a verificação constante se a snake consumiu o alimento
     function verificaAlimento(){
         //cabeça é o último elemento
         let cabeca = snake.corpo[snake.corpo.length-1];//[5,6]  [5,6]
@@ -236,8 +326,9 @@
         }
     }
 
+    //Faz a snake andar se o jogo não estiver pausado e não tiver perdido
     function run () {
-        if(!pausar){
+        if(!pausar && !perdeu){
             snake.andar();
         }
     }
@@ -245,6 +336,3 @@
     init();
 
 })();
-
-
-
