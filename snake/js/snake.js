@@ -153,15 +153,21 @@
         constructor(){
             //Preciso de uma posição diferente das que são ocupadas pela snake
             let posicao= snake.getPosLivre();
-            this.local = [posicao]; 
+            this.local = posicao; 
             this.cor = this.sorteiaCor();
-            this.local.forEach(campo => document.querySelector(`#board tr:nth-child(${campo[0]}) td:nth-child(${campo[1]})`).style.backgroundColor = this.cor);            
+            document.querySelector(`#board tr:nth-child(${this.local[0]}) td:nth-child(${this.local[1]})`).style.backgroundColor = this.cor;
+            if(this.cor==='#111111'){
+                this.valor=1;
+            }
+            else{
+                this.valor=2;
+            }
         }
 
         //Escolhe aleatóriamente a cor da snake
         sorteiaCor(){
             //preto tendo o dobro de posições do verm. ele tem 2x mais chances de ser escolhido
-            let coresAlimento=["#111111","#111111","#ff0000"];
+            let coresAlimento=["#111111","#ff0000","#111111"];
             const random = (min, max) =>Math.floor(Math.random() * (max-min) +min);
             return coresAlimento[random(0,3)];
         }
@@ -303,16 +309,10 @@
         //cabeça é o último elemento
         let cabeca = snake.corpo[snake.corpo.length-1];//[5,6]  [5,6]
 
-        if(cabeca[0] == alimento.local[0][0] && cabeca[1] == alimento.local[0][1]){
+        if(cabeca[0] == alimento.local[0] && cabeca[1] == alimento.local[1]){
 
-            if(alimento.cor==='#ff0000'){
-                placar.pontos = placar.pontos+2;
-            }
-            else{
-                placar.pontos = placar.pontos+1;
-            }
-            
-            //console.log(placar.pontos);
+            console.log('marcou: '+alimento.valor);
+            placar.pontos = placar.pontos+alimento.valor;
 
             document.getElementById("pontuacao").innerHTML = placar.pontos.toLocaleString('en', {minimumIntegerDigits:5,useGrouping:false});
 
