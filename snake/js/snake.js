@@ -51,7 +51,7 @@
         //verificar se a cabeça bateu em uma parte do corpo ou fora da tabela
         let cabeca = snake.corpo[snake.corpo.length-1];
 
-        if(cabeca[0] >=41 || cabeca[1] >=41 || cabeca[0] <0 || cabeca[1]<0){
+        if(cabeca[0] >=41 || cabeca[1] >=41 || cabeca[0] <=0 || cabeca[1]<=0){
             perdeu=true;
             console.log('perdeu saindo do campo');
             document.getElementById("GameStatus").innerHTML = ('Fim de Jogo! Você saiu do campo.');
