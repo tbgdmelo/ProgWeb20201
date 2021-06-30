@@ -5,8 +5,20 @@ function index (req, res){
 }
 function sobre(req, res){
     res.render("main/about", { 
-        titulo: "Página About",
+        titulo: "Sobre",
     });
 }
 
-module.exports= { index, sobre }
+function ui(req, res){
+    res.render("main/ui", { 
+        titulo: "Página Ui",
+    });
+}
+
+function game(req, res){
+    res.render("main/game", { 
+        titulo: "Game",
+    });
+}
+
+module.exports= { index, sobre, ui, game }
