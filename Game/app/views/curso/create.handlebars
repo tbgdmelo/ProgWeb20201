@@ -1,11 +1,11 @@
 <title>{{titulo}}</title>
 <h1>Adicionando Curso</h1>
 
-<form action="/curso/create" method="post" class="bs-component">
+<action action="/curso/create" method="post" class="bs-component">
     <div class="form-floating mb-3">
         <input name="sigla" type="text" class="form-control" id="sigla" placeholder="Digite a sigla do curso">
         <label for="sigla">Sigla do curso</label>
-        <small id="siglaHelp" class="form-text text-muted">Em caso de dúvidas consulte a tabela no final da página.</small>
+        <small id="siglaHelp" class="form-text text-muted">Em caso de dúvidas consulte o site da UFAM.</small>
     </div>
 
     <div class="form-floating mb-3">
@@ -39,7 +39,10 @@
                 </label>
             </div>
     </fieldset>
-
+    </br>
     <button type="submit" id="salvacurso" class="btn btn-success">Adicionar curso</button>
     <a href="/curso/" type="button" class="btn btn-danger">Voltar</a>
+    </action>
 </form>
+
+</br>
