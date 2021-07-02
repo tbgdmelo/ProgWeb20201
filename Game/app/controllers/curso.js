@@ -28,7 +28,7 @@ async function create(req, res){
 }
 
 async function read(req, res){
-    const curso = await Curso.findOne({ where: {id: req.params.id}});
+    const curso = await Curso.findOne({ where: {id: req.params.id}, include: models.Area});
     res.render("curso/read",{ 
         titulo: "Curso",
         curso: curso.toJSON(),
