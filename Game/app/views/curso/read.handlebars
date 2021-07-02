@@ -1,0 +1,11 @@
+<title>{{curso.nome}}</title>
+<h1>Curso: {{curso.nome}}</h1>
+<div class="card border-info mb-3" style="max-width: 20rem;">
+    <div class="card-header">Sigla: {{curso.sigla}} <a href="/curso/update/{{curso.id}}"><i class="fas fa-edit"></i></a></div>
+
+        <div class="card-body">
+            <h4 class="card-title">{{curso.nome}}</h4>
+            <p class="card-text">{{curso.descricao}}</p>
+            <p class="card-text">Área: {{curso.areaId}}</p>
+        </div>
+</div>

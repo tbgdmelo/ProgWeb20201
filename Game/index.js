@@ -35,6 +35,7 @@ app.use("/js", [
 
 app.use("/webfonts", express.static(`${__dirname}/node_modules/@fortawesome/fontawesome-free/webfonts`))
 
+app.use(express.urlencoded({ extended: false }));
 
 app.use(router);
 

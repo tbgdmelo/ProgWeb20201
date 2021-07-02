@@ -1,0 +1,50 @@
+<title>{{titulo}}</title>
+<h1>Atualizando Curso</h1>
+
+<form action="/curso/update/{{curso.id}}" method="post" class="bs-component">
+
+    <input type="hidden" name="id" value="{{curso.id}}">
+
+    <div class="form-floating mb-3">
+        <input name="sigla" type="text" value="{{curso.sigla}}" class="form-control" id="sigla" placeholder="Digite a sigla do curso">
+        <label for="sigla">Sigla do curso</label>
+        <small id="siglaHelp" class="form-text text-muted">Em caso de dúvidas consulte a tabela no final da página.</small>
+        <div class="invalid-feedback">{{printError errors 'sigla'}}</div>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input name="nome" type="text" value="{{curso.nome}}" class="form-control" id="nome" placeholder="Digite o nome do curso">
+        <label for="nome">Nome do curso</label>
+        <div class="invalid-feedback">{{printError errors 'nome'}}</div>
+    </div>
+
+    <div class="form-group">
+        <label for="descricao" class="form-label mt-4">Descrição do Curso</label>
+        <textarea name="descricao" class="form-control" id="descricao" rows="3">{{curso.descricao}}</textarea>
+    </div>
+
+    <fieldset class="form-group">
+        <legend class="mt-4">Área da ciência</legend>
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input type="radio" class="form-check-input" name="areaId" id="areaId" value="1" {{checked curso.areaId 1}}>
+                        Ciências Exatas <small class="form-text text-muted">Ex: Computação, Matemática, Física, etc.</small>
+                </label>
+            </div>
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input type="radio" class="form-check-input" name="areaId" id="areaId" value="2" {{checked curso.areaId 2}}>
+                        Ciências Humanas <small class="form-text text-muted">Ex: Línguas, História, Geografia, etc.</small>
+                </label>
+            </div>
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input type="radio" class="form-check-input" name="areaId" id="areaId" value="3" {{checked curso.areaId 3}}>
+                        Ciências Biológicas  <small class="form-text text-muted">Ex: Medicina, Biologia, Fisioterapia, , etc.</small>
+                </label>
+            </div>
+    </fieldset>
+
+    <button type="submit" id="salvacurso" class="btn btn-success">Atualizar curso</button>
+    <a href="/curso/" type="button" class="btn btn-danger">Voltar</a>
+</form>
